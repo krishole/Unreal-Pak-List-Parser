@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PakListParsere.cpp">
+    <ClCompile Include="PakListParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
