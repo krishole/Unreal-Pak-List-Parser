@@ -12,6 +12,7 @@
 
 namespace fs = std::experimental::filesystem;
 
+
 void GetDirectoryContents(const fs::path& path, std::vector<std::string>& v) {
 	for (const auto & entry : fs::directory_iterator(path)) {
 		std::string file = entry.path().string();
@@ -80,6 +81,29 @@ std::vector<std::string> LoadPakLog(std::string file, std::vector<std::string>& 
 	return filesInPak;
 }
 
+void CheckMainFileList(std::vector<std::string> &fileList) {
+	std::vector<std::string> duplicates;
+	for (auto &i : fileList) {
+		int count = 0;
+		for (auto &b : fileList) {
+			if (b == i) {
+				count++;
+				if (count > 1) {
+					break;
+				}
+			}
+		}
+		if (count > 1) {
+			duplicates.push_back(i);
+		}
+	}
+
+
+	std::sort(fileList.begin(), fileList.end());
+	fileList.erase(std::unique(fileList.begin(), fileList.end()), fileList.end());
+
+}
+
 void CheckForDuplicates(std::vector<std::string> &files, std::vector<std::vector<std::string>> &filesInPak, std::vector<std::string> &pakLogFiles) {
 
 	//create file stream
@@ -123,6 +147,10 @@ int main(){
 		filesInPak.push_back(filesInThisPak);
 	}
 
+	CheckMainFileList(files);
+
 	std::cout << "checking files for duplicates" << std::endl;
 	CheckForDuplicates(files, filesInPak, pakLogFiles);
+	std::cout << files.size() << " total files." << std::endl;
+	system("pause");
 }
